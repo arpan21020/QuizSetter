@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{url_for('static',filename='setQuiz.css')}}">
+
+
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" >
+            
+                <img id="top" src="" alt="logo" >
+                <h1>Admin</h1>
+            
+            <hr>
+            
+                <p id="middle"><a href="/setQuiz" id="setQ">Set Quiz</a></p>
+                
+           
+            <hr>
+            
+            
+        </div>
+        <div class="heading">
+            <div class="quizContainer">
+                
+                <form >
+                    <div class="sectioncontainer" id="sectionContainer">
+                        <div class="section">
+                            <div class="ques">
+                                
+                                <textarea id="question1" name="question" rows="4" placeholder="Add Question"></textarea>
+                                
+                            </div>
+                            <div id="options">
+                                <label for="floatingInput">Option 1 :</label>
+    
+                                <input type="text" class="form-control" name="option1_q" id="opt1_1" placeholder="">
+    
+                            </div>
+                            <div id="options">
+                                <label for="floatingInput">Option 2 :</label>
+    
+                                <input type="text" class="form-control" name="option2_q" id="opt2_1" placeholder="">
+    
+                            </div>
+                            <div id="options">
+                                <label for="floatingInput">Option 3 :</label>
+    
+                                <input type="text" class="form-control" name="option3_q" id="opt3_1" placeholder="">
+    
+                            </div>
+                            <div id="options">
+                                <label for="floatingInput">Option 4 :</label>
+    
+                                <input type="text" class="form-control" name="option4_q" id="opt4_1" placeholder="">
+    
+                            </div>
+                            <div id="options">
+                                <label for="correctans_1">Correct Answer :</label>
+                                <select id="correctans_1" name="correctans_1">
+                                    <option value="" disabled selected hidden>--Select--</option>
+                                    <option value="option1">Option 1</option>
+                                    <option value="option2">Option 2</option>
+                                    <option value="option3">Option 3</option>
+                                    <option value="option4">Option 4</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+    
+                    </div>
+                   
+                    <div class="addSection"><a id="add-section"><i class="fa-solid fa-square-plus" style="color: #ffffff;"></i></a></div>
+                    
+                    <div class="submitbtn">
+                        <button class="submit-btn" type="submit" onclick="submitForms()" fdprocessedid="me8sos">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        var formCount = 1; // Initialize form count
+
+        document.getElementById('add-section').addEventListener('click', function() {
+          var formContainer = document.querySelector('.sectioncontainer');
+          var lastForm = formContainer.lastElementChild;
+      
+          // Clone the last form instance
+          var clonedForm = lastForm.cloneNode(true);
+       // Clear input field values
+        formCount++;
+        var clonedInputs = clonedForm.querySelectorAll('textarea');
+        clonedInputs.forEach(function(textarea) {
+            textarea.value='';
+            var inputName = textarea.id.slice(0,8);
+            textarea.id = inputName + formCount;
+            textarea.name = inputName + formCount;
+        });
+          // Update the variable names
+          var formCountInputs = clonedForm.querySelectorAll('input');
+          
+          formCountInputs.forEach(function(input) {
+            input.value = '';
+            var inputName = input.id.slice(0,5);
+            input.id = inputName+formCount;
+            input.name = inputName+formCount;
+          });
+      
+          var formCountInputs = clonedForm.querySelectorAll('select');
+          formCountInputs.forEach(function(select) {
+            select.value = '';
+            var inputName = select.id.slice(0,11);
+            select.id = inputName + formCount;
+            select.name = inputName + formCount;
+            console.log(select.id);
+            console.log(select.name);
+          });
+          // Append the cloned form instance
+          formContainer.appendChild(clonedForm);
+           // Scroll to the newly added section
+           // Scroll to the newly added section
+          formContainer.scrollTop = formContainer.scrollHeight;
+
+            // Bring the newly added section in front
+          clonedFormed.style.zIndex = formContainer.childElementCount;
+       
+        });
+        function submitForms() {
+            var quizQuestions=[];
+            for(let i=1; i<=formCount;i++){
+                var questionData=[];
+                var question = document.getElementById('question'+i).value;
+                questionData.push(question);
+                console.log(questionData);
+                var optionsData=[];
+                for(let j=1;j<=4;j++){
+                    var options = document.getElementById('opt'+j+'_'+i).value;
+                    optionsData.push(options);
+                }
+                console.log(optionsData);
+                questionData.push(optionsData);
+                
+                var correctAns=document.getElementById('correctans_'+i).value;
+                questionData.push(correctAns);
+                console.log(questionData);
+                quizQuestions.push(questionData);
+            }
+            console.log(quizQuestions);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/setQuiz", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ 'data': quizQuestions }));
+    
+            // Optionally, handle the response from Flask here
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            window.alert("Form submitted");
+           
+        }
+        
+          
+     
+        
+          
+        
+      </script>
+</body>
+</html>

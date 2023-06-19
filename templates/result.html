@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+</head>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    form{
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+        
+    }
+    form .questions{
+        width: 95%;
+        margin: 0.5em;
+        padding: 1em;
+        display: flex;
+
+
+    }
+    form  p{
+        margin: 0.5em;
+        padding: 0.5em;
+    }
+    form  hr{
+        flex-shrink: 0;
+        width: 90%;
+        height: 0.05em;
+        background-color: black;
+        margin-top: 1em;
+    }
+    .result{
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        font-size: 2em;
+    }
+</style>
+<body>
+    <div class="result"><h1>Score : {{resultData['score']}}</h1></div>
+    <div class="container" id="container">
+        <form action="/showResult" method="post">
+        {% for i in resultData['quizData'] %}
+        
+
+        <div class="questions" id="{{i[0]}}">
+            <p>{{i[0]}}</p>
+            <div>
+                <p>{{i[1]}}</p>
+                <p>{{i[2]}}</p>
+                <p>{{i[3]}}</p>
+                <p>{{i[4]}}</p>
+                <p>{{i[5]}}</p>
+                <p>Correct answer : {{i[6]}}</p>
+            </div>
+            
+        </div>
+        <hr>
+        {% endfor %}
+        
+    </div>
+</form>
+    </div>
+    <script>
+        selectedOptions=[
+        {% for i in resultData['selectedOptions'] %}
+        "{{i}}",
+        {% endfor %}
+        ];
+        correctOptions=[
+        {% for j in resultData['correctOptions']%}
+        "{{j}}",
+        {% endfor %}
+        ];
+        var len={{resultData['length']}};
+       for(let i=0;i<len;i++){
+       
+        if(selectedOptions[i]==correctOptions[i]){
+        
+            document.getElementById(i+1).style.backgroundColor="lightgreen";
+            
+        }
+        else{
+            document.getElementById(i+1).style.backgroundColor="red";
+        }
+       }
+
+    </script>
+</body>
+</html>

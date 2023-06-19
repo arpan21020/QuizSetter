@@ -1,0 +1,10 @@
+{
+    "params":{
+        "host":"localhost",
+        "user":"root",
+        "password":"#guess_me_",
+        "database":"QuizDatabase",
+        "admin_username":"Admin",
+        "admin_password":"123"
+    }
+}

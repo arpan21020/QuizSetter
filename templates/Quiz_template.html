@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    form{
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        
+        
+    }
+    form .questions{
+        width: 95%;
+        margin: 0.5em;
+        padding: 1em;
+        display: flex;
+
+
+    }
+    form input{
+        padding: 1em 2em 1em 2em;
+        margin: 1em;
+        border-radius: 0.5em;
+        width: 10%;
+
+    }
+    form  input:hover{
+        color: white;
+        background: #000;
+    }
+    form  p{
+        margin: 0.5em;
+        padding: 0.5em;
+    }
+    form  hr{
+        flex-shrink: 0;
+        width: 90%;
+        height: 0.05em;
+        background-color: black;
+        margin-top: 1em;
+    }
+    
+</style>
+<body>
+    <div class="container" id="container">
+        <form action="/showResult" method="post">
+        {% for i in quizData %}
+        
+
+        <div class="questions" id="{{i[0]}}">
+            <p>{{i[0]}}</p>
+            <div>
+                <p>{{i[1]}}</p>
+                <input type="radio" name={{i[0]}} value="option1" id="opt1" >{{i[2]}}<br>
+                <input type="radio" name="{{i[0]}}" value="option2" id="opt2">{{i[3]}}<br>
+                <input type="radio" name="{{i[0]}}" value="option3" id="opt3">{{i[4]}}<br>
+                <input type="radio" name="{{i[0]}}" value="option4"id="opt4">{{i[5]}}<br>
+            </div>
+            
+        </div>
+        <hr>
+        {% endfor %}
+        <input type="submit" onclick="submit()" value="Submit">
+    </div>
+</form>
+    </div>
+    <script>
+        function preventBack(){window.history.forward()}
+        setTimeout("preventBack()",0);
+        window.onunload=function(){null;}
+        var quizQuestions = [
+        {% for question in quizData %}
+        
+           "{{question}}",
+        {% endfor %}
+    ];
+   var quizOptions = [
+   {% for option in quizData %}
+   "{{option[6]}}",
+   {% endfor %}
+   ];
+   function submit(){
+    var selectedOptions=[];
+    {% for i in quizData %}
+        
+        if(document.querySelector('input[name="{{i[0]}}"]:checked')==null){
+            selectedOptions.push("None");
+        }
+        else{
+            selectedOptions.push(document.querySelector('input[name="{{i[0]}}"]:checked').value);
+        }
+    
+    {% endfor %}
+    var score=0;
+    for(let i=0;i<quizOptions.length;i++){
+        if(selectedOptions[i]==quizOptions[i]){
+            document.getElementById(i+1).style.backgroundColor="green";
+            score++;
+        }
+        else{
+            document.getElementById(i+1).style.backgroundColor="red";
+        }
+    }
+  
+
+
+    var newParagraph = document.createElement("p");
+  
+    // Set content for the new <p> element
+    newParagraph.textContent = score;
+    
+    // Get the container element
+    var container = document.getElementById("container");
+    
+    // Append the new <p> element to the container
+    container.appendChild(newParagraph);
+       
+    console.log(quizOptions)
+    console.log(selectedOptions)
+
+   
+}
+
+  
+</script>
+</body>
+</html>

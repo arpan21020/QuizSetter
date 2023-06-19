@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='adminDashboard.css')}}">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" >
+            
+                <img id="top" src="" alt="logo" >
+                <h1>Admin</h1>
+            
+            <hr>
+            
+                <p id="middle"><a href="/setQuiz">Set Quiz</a></p>
+           
+            <hr>
+            
+                <footer id="bottom"><a href="/adminLogout">Logout</a></footer>
+            
+        </div>
+        <div class="heading">
+        <h1>Welcome Admin</h1>
+
+        </div>
+    </div>
+    <script>
+        // Manipulate browser history to prevent navigation
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function(event) {
+          window.history.pushState(null, null, window.location.href);
+        };
+      </script>
+</body>
+</html>

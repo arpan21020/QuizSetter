@@ -1,0 +1,6 @@
+{
+    "html.autoClosingTags": true,
+    "html.format.indentHandlebars": true,
+    "html.format.enable": true,
+    "html.format.indentInnerHtml": true
+}
